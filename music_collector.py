@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import csv
 import random
 import datetime
@@ -84,7 +86,7 @@ def any_phrase(a):
     x = []
     for i in range(0, len(z)):
         if a.lower() in z[i][0][1].lower():
-            x.append(z[i])
+            x.append("Artist: " + " - Album: ".join(z[i][0]))
     if len(x) == 0 or a == "" or a.isspace():
         return "No such entry in any album name"
     else:
@@ -99,18 +101,21 @@ def album_artist(b):
     for i in range(len(z)):     # made proper key and entry for it
         if b == "2":        # Find albums by artist
             key = z[i][0][0]
-            x = z[i][0][1], z[i][1]
+            x = z[i][0]
+            my_music.setdefault(key.lower(), []).append("Artist: " + " - Album: ".join(x))      # if entry add key
         elif b == "3":      # Find albums by year
             key = z[i][1][0]
-            x = z[i][0], z[i][1][1], z[i][1][2]
+            x = z[i][0]
+            my_music.setdefault(key.lower(), []).append("Artist: " + " - Album: ".join(x))      # if entry add key
         elif b == "4":      # Find musician by album
             key = z[i][0][1]
-            x = z[i][0][0], z[i][1]
+            x = z[i][0][0]
+            my_music.setdefault(key.lower(), "Artist: " + x)
         elif b == "6":      # Find album by genre
             key = z[i][1][1]
-            x = z[i][0], z[i][1][0], z[i][1][2]
-        my_music.setdefault(key.lower(), []).append(x)      # if entry add key and information for it,
-    return my_music                                # if key already present add next entry to this key
+            x = z[i][0]
+            my_music.setdefault(key.lower(), []).append("Artist: " + " - Album: ".join(x))      # if entry add key
+    return my_music
 
 
 def search_year(a):
@@ -120,8 +125,8 @@ def search_year(a):
     my_music = {}       # establish dictionary to later use
     for i in range(len(z)):     # made proper key and entry for it
         key = z[i][1][0]
-        x = z[i][0], z[i][1][1], z[i][1][2]
-        my_music.setdefault(key, []).append(x)      # if entry add key and information for it,
+        x = z[i][0]
+        my_music.setdefault(key, []).append("Artist: " + " - Album: ".join(x))      # if entry add key and information for it,
     return my_music.get(a, c)
 
 
@@ -161,8 +166,8 @@ def random_album(a):
     my_music = {}       # establish dictionary to later use
     for i in range(len(z)):     # made proper key and entry for it
         key = z[i][1][1]        # key genre
-        x = z[i][0], z[i][1][0], z[i][1][2]
-        my_music.setdefault(key, []).append(x)
+        x = z[i][0]
+        my_music.setdefault(key, []).append("Artist: " + " - Album: ".join(x))
     random_list = (my_music.get(a, [c]))        # add all albums that are choosen genre
     g = (random.randint(0, len(random_list) - 1))       # choose random index number for random_list
     return random_list[g]
@@ -172,7 +177,7 @@ def menu_check(a):
     """Check if input in menu have correct format and is in range"""
     try:
         int(a)
-        if int(a) in range(0, 11):
+        if int(a) in range(0, 9):
             return True
         pass
     except (ValueError, IndexError):
@@ -198,6 +203,9 @@ while True:     # body of our application
         print("")
     elif menu_use == "2":     # Find albums by artist
         artist = input().strip()
+        if not artist:
+            print("Invalid input", '\n')
+            continue
         print(search(artist, menu_use), '\n')
     elif menu_use == "3":       # Find albums by year
         year = input()
@@ -207,19 +215,31 @@ while True:     # body of our application
         else:
             year = int(year)
         print(search_year(year), '\n')
-    elif menu_use == "4":       # Find musician by album
+    elif menu_use == "4":       # Find musician by albume
         album_name = input().strip()
+        if not album_name:
+            print("Invalid input", '\n')
+            continue
         print(search(album_name, menu_use), '\n')
     elif menu_use == "5":       # Find musician by album
         phrase = input().strip()
+        if not phrase:
+            print("Invalid input", '\n')
+            continue
         print(any_phrase(phrase), '\n')
     elif menu_use == "6":       # Find album by genre
         genre = input().strip()
+        if not genre:
+            print("Invalid input", '\n')
+            continue
         print(search(genre, menu_use), '\n')
     elif menu_use == "7":       # Sume of all albums age
         print("Sume age of all albums is:", ages(), '\n')
     elif menu_use == "8":       # Find album by genre
         genre_random = input().strip()
+        if not genre_random:
+            print("Invalid input", '\n')
+            continue
         print(random_album(genre_random), '\n')
     elif menu_use == "0":       # Exit
         exit()
