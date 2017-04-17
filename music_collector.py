@@ -97,14 +97,11 @@ def any_phrase(a):
     for i in range(0, len(z)):
         if a.lower() in z[i][0][1].lower():
             x.append("Artist: " + " - Album: ".join(z[i][0]))
-    if len(x) == 0 or a == "" or a.isspace():
-        return "No such entry in any album name"
-    else:
-        return x
+    return x
 
 
-def album_artist(b):
-    """Made dictionary with proper key depend from argument"""
+def album_artist(a, b):
+    """Made dictionary with proper key depend from argument and give result as outp from search"""
     z = music()
     x = 0
     my_music = {}       # establish dictionary to later use
@@ -125,7 +122,8 @@ def album_artist(b):
             key = z[i][1][1]
             x = z[i][0]
             my_music.setdefault(key.lower(), []).append("Artist: " + " - Album: ".join(x))      # if entry add key
-    return my_music
+        a = a.lower()
+    return my_music.get(a)
 
 
 def search_year(a):
@@ -137,20 +135,7 @@ def search_year(a):
         key = z[i][1][0]
         x = z[i][0]
         my_music.setdefault(key, []).append("Artist: " + " - Album: ".join(x))      # if entry add key and information
-    return my_music.get(a, c)
-
-
-def search(a, b):
-    """Show resault of our search or message (depend form input)"""
-    u = album_artist(b)
-    a = a.lower()
-    if b == "2":        # Find albums by artist
-        c = "No such artst in databse"
-    elif b == "4":      # Find musician by album
-        c = "No such album in thata base"
-    elif b == "6":      # Find album by genre
-        c = "No such genre in data base"
-    return u.get(a, c)
+    return my_music.get(a)
 
 
 def ages():
@@ -211,51 +196,96 @@ while True:     # body of our application
             new_lenght = input("Invalid input. Add lenght: ")
         add(new_artis, new_album, new_year, new_genre, new_lenght)
         print("")
+
     elif menu_use == "2":     # Find albums by artist
-        artist = input().strip()
+        artist = input("Enter name of the artist: ").strip()
+        print("")
+        v = album_artist(artist, menu_use)
         if not artist:
             print("Invalid input", '\n')
             continue
-        print(search(artist, menu_use), '\n')
+        if v is not None:
+            for x in range(0, len(v)):
+                    print(v[x])
+        else:
+            print("No such artst in databse")
+        print("")
+
     elif menu_use == "3":       # Find albums by year
-        year = input()
+        year = input("Enter year you want to find albums from: ")
+        print("")
         if not is_number(year):
             print("Invalid input", '\n')
             continue
         else:
             year = int(year)
-        print(search_year(year), '\n')
+            v = search_year(year)
+            if v is not None:
+                for x in range(0, len(v)):
+                    print(v[x])
+            else:
+                print("No albums from that year in database")
+        print("")
+
     elif menu_use == "4":       # Find musician by albume
-        album_name = input().strip()
+        album_name = input("Enter name of the album: ").strip()
+        print("")
+        v = album_artist(album_name, menu_use)
         if not album_name:
             print("Invalid input", '\n')
             continue
-        print(search(album_name, menu_use), '\n')
-    elif menu_use == "5":       # Find musician by album
-        phrase = input().strip()
+        if v is not None and len(v) != 0:
+            print(v)
+        else:
+            print("No such album in thata base")
+        print("")
+
+    elif menu_use == "5":       # Find album by letter(s)
+        phrase = input("Enter phrase you want to use to search: ").strip()
+        print("")
+        v = any_phrase(phrase)
         if not phrase:
             print("Invalid input", '\n')
             continue
-        print(any_phrase(phrase), '\n')
+        if v is not None and len(v) != 0:
+            for x in range(0, len(v)):
+                    print(v[x])
+        else:
+            print("No such entry in any album name")
+        print("")
+
     elif menu_use == "6":       # Find album by genre
-        genre = input().strip()
+        genre = input("Enter genre you want to choose: ").strip()
+        print("")
+        v = album_artist(genre, menu_use)
         if not genre:
             print("Invalid input", '\n')
             continue
-        print(search(genre, menu_use), '\n')
+        if v is not None:
+            for x in range(0, len(v)):
+                    print(v[x])
+        else:
+            print("No such genre in data base")
+        print("")
+
     elif menu_use == "7":       # Sume of all albums age
-        print("Sume age of all albums is:", ages(), '\n')
+        print('\n', "Sume age of all albums is:", ages(), '\n')
+
     elif menu_use == "8":       # Find album by genre
-        genre_random = input().strip()
+        genre_random = input("Enter genre you want to choose: ").strip()
+        print("")
         if not genre_random:
             print("Invalid input", '\n')
             continue
         print(random_album(genre_random), '\n')
+
     elif menu_use == "9":       # Find amoutn albums by artist
-        number_artist = input().strip()
+        number_artist = input("Enter artsist name: ").strip()
+        print("")
         if not number_artist:
             print("Invalid input", '\n')
             continue
-        print("Amount of albums by", number_artist, ": ", numer_albums(number_artist), '\n')
+        print("Amount of albums by", number_artist, ":", numer_albums(number_artist), '\n')
+
     elif menu_use == "0":       # Exit
         exit()
