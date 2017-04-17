@@ -251,7 +251,7 @@ while True:     # body of our application
             print("Invalid input", '\n')
             continue
         print(random_album(genre_random), '\n')
-    elif menu_use == "9":       # Find albums by artist
+    elif menu_use == "9":       # Find amoutn albums by artist
         number_artist = input().strip()
         if not number_artist:
             print("Invalid input", '\n')
