@@ -17,7 +17,7 @@ def menu():     # Print menu
          6) Find albums by genre
          7) Calculate the age of all albums
          8) Choose a random album by genre
-         9) Show the amount of albums by an artist * # in dev
+         9) Show the amount of albums by an artist
         10) Find the longest-time album *   # in dev
          0) Exit"""
     return a
@@ -70,6 +70,16 @@ def music():        # read csv file with database
                 name_and_information = (name, information)      # make tuplet with 2 tuplets
                 music.append(name_and_information)      # add all information to 1 list
         return music
+
+
+def numer_albums(a):
+    """Count number of albums of given artist"""
+    z = music()
+    i = 0
+    for x in range(0, len(z)):
+        if a.lower() == z[x][0][0].lower():
+            i += 1
+    return i
 
 
 def add(a, b, c, d, e):
@@ -126,7 +136,7 @@ def search_year(a):
     for i in range(len(z)):     # made proper key and entry for it
         key = z[i][1][0]
         x = z[i][0]
-        my_music.setdefault(key, []).append("Artist: " + " - Album: ".join(x))      # if entry add key and information for it,
+        my_music.setdefault(key, []).append("Artist: " + " - Album: ".join(x))      # if entry add key and information
     return my_music.get(a, c)
 
 
@@ -177,7 +187,7 @@ def menu_check(a):
     """Check if input in menu have correct format and is in range"""
     try:
         int(a)
-        if int(a) in range(0, 9):
+        if int(a) in range(0, 10):
             return True
         pass
     except (ValueError, IndexError):
@@ -241,5 +251,11 @@ while True:     # body of our application
             print("Invalid input", '\n')
             continue
         print(random_album(genre_random), '\n')
+    elif menu_use == "9":       # Find albums by artist
+        number_artist = input().strip()
+        if not number_artist:
+            print("Invalid input", '\n')
+            continue
+        print("Amount of albums by", number_artist, ": ", numer_albums(number_artist), '\n')
     elif menu_use == "0":       # Exit
         exit()
