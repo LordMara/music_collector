@@ -8,7 +8,7 @@ from datetime import date
 
 def menu():     # Print menu
     """Print menu for application"""
-    a = """Welcome in the CoolMusic! Choose the action:
+    menu = """Welcome in the CoolMusic! Choose the action:
          1) Add new album
          2) Find albums by artist
          3) Find albums by year
@@ -20,13 +20,13 @@ def menu():     # Print menu
          9) Show the amount of albums by an artist
         10) Find the longest-time album
          0) Exit"""
-    return a
+    return menu
 
 
-def is_number(a):
+def is_number(number):
     """Check if input is an int"""
     try:
-        int(a)
+        int(number)
         return True
     except ValueError:
         pass
